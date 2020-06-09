@@ -20,9 +20,19 @@ export default {
         }
     },
     methods: {
-        signUp: function() {
+        signUp_old: function() {
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-            .then(() => alert('Your account has been created !', (err) => alert('Oops. ' + err.message)))
+            .then(function() {
+                fetch('https://httpbin.org/get').then(r => r.json()).then(response => console.log(response))
+            }, (err) => alert('Oops. ' + err.message))
+            // .then(() => alert('Your account has been created !', (err) => alert('Oops. ' + err.message)))
+        },
+        signUp: async function() {
+            let response = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+            console.log(response)
+            let result = await fetch('https://httpbin.org/get')
+            result = await result.json()
+            console.log(result)
         }
     }
 }
